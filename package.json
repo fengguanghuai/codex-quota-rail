@@ -1,0 +1,21 @@
+{
+  "name": "codex-quota-rail",
+  "version": "0.3.2",
+  "private": true,
+  "description": "Bilingual weekly quota and reset time, always visible above your Codex profile.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/cli.mjs start",
+    "install:local": "node src/cli.mjs install",
+    "uninstall:local": "node src/cli.mjs uninstall"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "ws": "^8.22.1"
+  }
+}
