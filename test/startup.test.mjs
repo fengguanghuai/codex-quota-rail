@@ -35,3 +35,13 @@ test('native invocation keeps paths and identity as separate arguments',()=>{
  const [bin,args]=bridgeCommand('quit','C:\\App Name\\Codex.exe','pid:key',123);
  assert(bin);assert(args.includes('C:\\App Name\\Codex.exe'));assert(args.includes('pid:key'));assert(args.includes('123'));
 });
+
+test('diagnostics distinguish preserved sessions, input protection and late launches',()=>{
+ const g=new StartupGuard();g.consider(snapshot([app]));assert.equal(g.reason,'existing-session');
+ g.consider(snapshot([{...app,id:'2'}],100000,99000));assert.equal(g.reason,'input-after-launch');
+ const late=new StartupGuard();late.consider(snapshot([]));
+ late.consider(snapshot([{...app,age:20}],100000,70000));assert.equal(late.reason,'launch-window-expired');
+ const pending=new StartupGuard();pending.consider(snapshot([]));
+ pending.consider(snapshot([{...app,finished:false}]));assert.equal(pending.reason,'waiting-for-ready-foreground');
+ assert.equal(pending.consider(snapshot([app])).id,'1');assert.equal(pending.reason,'eligible');
+});

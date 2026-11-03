@@ -37,6 +37,8 @@ node src/cli.mjs install
 
 仅在刚启动、已完成初始化、处于前台且启动后没有新输入时，才可能正常退出并重开一次补上连接参数。你一旦开始操作，就跳过自动重开。助手启动前已有的会话不会被重启；尝试会先持久记录，间隔至少 1 分钟，不强制结束客户端。只在启动或退出的短暂过渡期间进行有界检查。连接健康仍会定时探测本地端口，额度仍每分钟刷新。
 
+macOS 下，单纯移动鼠标或释放鼠标按键不视为新操作；按键、新点击、滚动和拖动仍会阻止自动重开。本机 `startup-diagnostics.json` 记录最近的启动判断，供排障使用。
+
 如果系统策略禁止事件订阅、客户端拒绝正常退出，或助手比客户端启动得晚，可完全退出后使用 **Start Codex.command / Start Codex.cmd** 作为备用入口。Status 中的 `startup` 显示 `listening` 或 `unavailable`。
 
 ZIP 包含 macOS 14+ 通用架构原生助手及 Swift 源码，使用者无需安装 Xcode。开发者可用 Xcode 命令行工具运行 `scripts/build-native.sh` 重新构建。助手采用临时签名，未经 Apple 公证。Windows 的 PowerShell 执行策略仅作用于助手进程，不修改系统策略。

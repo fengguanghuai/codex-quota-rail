@@ -7,7 +7,13 @@ guard args.count >= 3 else { exit(2) }
 let action = args[1], appPath = args[2]
 func emit(_ value: Any) { if let data = try? JSONSerialization.data(withJSONObject: value), let text = String(data:data,encoding:.utf8) { print(text); fflush(stdout) } }
 func apps() -> [NSRunningApplication] { NSWorkspace.shared.runningApplications.filter { $0.bundleURL?.standardizedFileURL.path == URL(fileURLWithPath:appPath).standardizedFileURL.path } }
-func stamp() -> Double { Date().timeIntervalSince1970 * 1000 - CGEventSource.secondsSinceLastEventType(.combinedSessionState,eventType:CGEventType(rawValue:UInt32.max)!) * 1000 }
+// Pointer motion and release of the click that launched the app are not new actions.
+// Keep key presses, new clicks, scrolling and dragging as restart blockers.
+func stamp() -> Double {
+ let types: [CGEventType] = [.keyDown, .flagsChanged, .leftMouseDown, .rightMouseDown, .otherMouseDown, .scrollWheel, .leftMouseDragged, .rightMouseDragged, .otherMouseDragged]
+ let idle = types.map { CGEventSource.secondsSinceLastEventType(.combinedSessionState,eventType:$0) }.min() ?? 0
+ return Date().timeIntervalSince1970 * 1000 - idle * 1000
+}
 func identity(_ app:NSRunningApplication)->String { "\(app.processIdentifier):\(app.launchDate?.timeIntervalSince1970 ?? 0)" }
 func details(_ app:NSRunningApplication)->[String:Any] {
  let p=Process(), pipe=Pipe();p.executableURL=URL(fileURLWithPath:"/bin/ps");p.arguments=["-p",String(app.processIdentifier),"-o","args="];p.standardOutput=pipe;p.standardError=FileHandle.nullDevice

@@ -6,7 +6,7 @@ This is an unofficial preview add-on, not an OpenAI product. It is not a securit
 
 - Reads rate-limit information through the existing bundled Codex app-server over stdio. The Codex process may use its ordinary authenticated network connections.
 - Does not directly read or copy authentication files, ask for API keys, scan projects, read conversation databases, or upload telemetry.
-- Stores language preferences and a small status file (state, attached-window count, timestamps). Raw RPC account data is not saved.
+- Stores language preferences and a small status file (state, attached-window count, timestamps). Startup diagnostics additionally store event times, decision reasons, process IDs and launch/input timing; they contain no account or conversation data. Raw RPC account data is not saved.
 - Connects to the local desktop renderer using Chrome DevTools Protocol. The injected card reads navigation structure and the profile anchor, not chat messages.
 
 ## Debugging interface

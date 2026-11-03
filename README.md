@@ -44,6 +44,8 @@ After installation, save your work and completely quit the client once, then ope
 
 A newly launched, foreground client may be gracefully reopened once with local connection arguments, only if launch initialization has finished and no subsequent user input is detected. If you start interacting, the handoff is skipped. Existing sessions at agent startup are never restarted. Attempts are persisted before quitting, have a one-minute cooldown, and never force-kill a client. Only the short startup/quit transition uses bounded checks. Connection health still uses a lightweight local endpoint probe; quota refresh remains once per minute.
 
+On macOS, pointer motion and mouse release alone do not count as new input; key presses, new clicks, scrolling and dragging still prevent handoff. Local `startup-diagnostics.json` records the most recent startup decision for troubleshooting.
+
 If event subscriptions are unavailable, the client refuses graceful close, or the agent started after the client, use **Start Codex.command / Start Codex.cmd** as a fallback after quitting manually. Status reports `startup: listening` or `unavailable`. Windows event subscriptions may be restricted by system policy.
 
 The ZIP includes a universal macOS 14+ native helper and its Swift source; end users do not need Xcode. Developers can rebuild it with `scripts/build-native.sh` and Xcode command-line tools. The helper is ad-hoc signed, not Apple-notarized. Windows uses a bundled PowerShell script with execution policy scoped to the helper process.

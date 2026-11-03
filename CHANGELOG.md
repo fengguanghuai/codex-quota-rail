@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3 — Preview
+
+- On macOS, ignore pointer motion and mouse release when deciding whether a fresh launch is untouched; key presses, new clicks, scrolling and dragging still block automatic restart.
+- Persist local startup decision diagnostics without account or conversation data; diagnostic write failures cannot interrupt the handoff.
+- Preserve startup age, foreground, initialization, cooldown and existing-session guards.
+
 ## 0.3.2 — Preview
 
 - Discover macOS apps in system/user Applications or CODEX_QUOTA_APP.
